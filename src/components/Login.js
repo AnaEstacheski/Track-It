@@ -1,6 +1,6 @@
 import axios from "axios"
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react"
 import logo from '../assets/imgs/logo.png'
 
@@ -9,7 +9,7 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
     
-    function log(e) {
+    function login(e) {
         e.preventDefault()
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const body = { email, password }
@@ -17,7 +17,7 @@ export default function Login() {
         const promise = axios.post(URL, body)
     
         promise.then(
-          navigate("/habits", {
+          navigate("/today", {
             state: {
               email: email,
               password: password
@@ -26,32 +26,31 @@ export default function Login() {
         )
         
         console.log(body)
-        
     
         promise.catch((err) => {
           console.log(err.response.data)
         })
-      }
+    }
 
 
     return (
         <LoginScreen>
             <img src={logo} alt="logo" />
-            <form onSubmit={log}>
+            <form onSubmit={login}>
                 <FormStyle>
                     <input
                         id="email"
                         value={email}
-                        type="text"
+                        type="email"
                         onChange={e => setEmail(e.target.value)}
                         placeholder="email"
                         required
                     />
 
                     <input
-                        id="senha"
+                        id="password"
                         value={password}
-                        type="text"
+                        type="password"
                         onChange={e => setPassword(e.target.value)}
                         placeholder="senha"
                         required
@@ -59,7 +58,7 @@ export default function Login() {
                     <button type="submit">Entrar</button>
                 </FormStyle>
             </form>
-            <p>Não tem uma conta? Cadastre-se</p>
+            <Link to={"/register"}><p>Não tem uma conta? Cadastre-se!</p></Link>
         </LoginScreen>
     )
 }
@@ -111,7 +110,7 @@ const FormStyle = styled.div`
     button {
         border-style: none;
 		color: #ffffff;
-        width: 308px;
+        width: 312px;
 		height: 45px;
         margin: 2px 36px 6px 36px;
 		background-color: #52B6FF;
