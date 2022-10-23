@@ -2,20 +2,24 @@ import axios from "axios"
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react"
+import Loading from "./Loading";
 import logo from '../assets/imgs/logo.png'
 
 export default function Register() {
+  // const [disabled, setDisabled] = useState(false);
+  const [isClicked, setIsClicked] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
   const [image, setImage] = useState("")
   const navigate = useNavigate()
 
+  console.log(isClicked)
+
   function registration(e) {
     e.preventDefault()
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
     const body = { email, password, name, image }
-
     const promise = axios.post(URL, body)
 
     promise.then(
@@ -28,13 +32,13 @@ export default function Register() {
         }
       })
     )
-    
+
     console.log(body)
 
     promise.catch((err) => {
       console.log(err.response.data)
     })
-}
+  }
 
   return (
     <LoginScreen>
@@ -47,6 +51,7 @@ export default function Register() {
             type="email"
             onChange={e => setEmail(e.target.value)}
             placeholder="email"
+            disabled={isClicked ? true : false}
             required
           />
 
@@ -56,6 +61,7 @@ export default function Register() {
             type="password"
             onChange={e => setPassword(e.target.value)}
             placeholder="senha"
+            disabled={isClicked ? true : false}
             required
           />
 
@@ -65,6 +71,7 @@ export default function Register() {
             type="text"
             onChange={e => setName(e.target.value)}
             placeholder="nome"
+            disabled={isClicked ? true : false}
             required
           />
 
@@ -74,9 +81,11 @@ export default function Register() {
             type="url"
             onChange={e => setImage(e.target.value)}
             placeholder="foto"
+            disabled={isClicked ? true : false}
             required
           />
-          <button type="submit">Cadastrar</button>
+         
+          <button onClick={() => setIsClicked(true)} type="submit">{isClicked ? <Loading/> : "Cadastrar"}</button>
         </FormStyle>
       </form>
       <Link to={"/"}><p>Já tem uma conta? Faça login</p></Link>
@@ -128,11 +137,14 @@ const FormStyle = styled.div`
   }
 
   button {
+    display: flex;
+    justify-content: center;
     border-style: none;
 		color: #ffffff;
     width: 312px;
 		height: 45px;
     margin: 2px 36px 6px 36px;
+    padding-top: 10px;
 		background-color: #52B6FF;
 		border-radius: 5px;
     font-family: 'Lexend Deca', sans-serif;
