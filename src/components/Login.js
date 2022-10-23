@@ -1,34 +1,34 @@
 import axios from "axios"
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import Loading from "./Loading";
 import logo from '../assets/imgs/logo.png'
+import { AuthContext } from "../aux/auth";
 
 export default function Login() {
+    const { setUser } = useContext(AuthContext)
+    const [isClicked, setIsClicked] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
-    
+
     function login(e) {
         e.preventDefault()
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const body = { email, password }
-    
+
         const promise = axios.post(URL, body)
-    
-        promise.then(
-          navigate("/today", {
-            state: {
-              email: email,
-              password: password
-            }
-          })
-        )
-        
+
+        promise.then((res) => {
+            setUser(res.data)
+            navigate("/today")
+        })
+
         console.log(body)
-    
-        promise.catch((err) => {
-          console.log(err.response.data)
+
+        promise.catch((err) => {alert(err.response.data.message)
+        console.log(err)
         })
     }
 
@@ -44,6 +44,7 @@ export default function Login() {
                         type="email"
                         onChange={e => setEmail(e.target.value)}
                         placeholder="email"
+                        disabled={isClicked ? true : false}
                         required
                     />
 
@@ -53,9 +54,10 @@ export default function Login() {
                         type="password"
                         onChange={e => setPassword(e.target.value)}
                         placeholder="senha"
+                        disabled={isClicked ? true : false}
                         required
                     />
-                    <button type="submit">Entrar</button>
+                    <button onClick={() => setIsClicked(true)} type="submit">{isClicked ? <Loading /> : "Entrar"}</button>
                 </FormStyle>
             </form>
             <Link to={"/register"}><p>Não tem uma conta? Cadastre-se!</p></Link>
@@ -108,11 +110,14 @@ const FormStyle = styled.div`
        }
 
     button {
+        display: flex;
+        justify-content: center;
         border-style: none;
 		color: #ffffff;
         width: 312px;
 		height: 45px;
         margin: 2px 36px 6px 36px;
+        padding-top: 10px;
 		background-color: #52B6FF;
 		border-radius: 5px;
         font-family: 'Lexend Deca', sans-serif;

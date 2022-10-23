@@ -6,7 +6,6 @@ import Loading from "./Loading";
 import logo from '../assets/imgs/logo.png'
 
 export default function Register() {
-  // const [disabled, setDisabled] = useState(false);
   const [isClicked, setIsClicked] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -23,20 +22,13 @@ export default function Register() {
     const promise = axios.post(URL, body)
 
     promise.then(
-      navigate("/", {
-        state: {
-          email: email,
-          password: password,
-          name: name,
-          image: image
-        }
-      })
+      navigate("/")
     )
 
     console.log(body)
 
-    promise.catch((err) => {
-      console.log(err.response.data)
+    promise.catch((err) => {alert(err.response.data.message)
+    console.log(err)
     })
   }
 
