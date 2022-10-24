@@ -1,8 +1,8 @@
 import axios from "axios"
-import styled from "styled-components";
+import styled from "styled-components"
 import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react"
-import Loading from "./Loading";
+import Loading from "../aux/Loading"
 import logo from '../assets/imgs/logo.png'
 
 export default function Register() {
@@ -25,10 +25,9 @@ export default function Register() {
       navigate("/")
     )
 
-    console.log(body)
-
-    promise.catch((err) => {alert(err.response.data.message)
-    console.log(err)
+    promise.catch((err) => {
+      alert("Dados preenchidos de forma incorreta")
+      console.log(err)
     })
   }
 
@@ -76,8 +75,8 @@ export default function Register() {
             disabled={isClicked ? true : false}
             required
           />
-         
-          <button onClick={() => setIsClicked(true)} type="submit">{isClicked ? <Loading/> : "Cadastrar"}</button>
+
+          <button onClick={() => setIsClicked(true)} type="submit">{isClicked ? <Loading /> : "Cadastrar"}</button>
         </FormStyle>
       </form>
       <Link to={"/"}><p>Já tem uma conta? Faça login</p></Link>

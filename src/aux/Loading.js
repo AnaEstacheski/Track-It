@@ -9,7 +9,7 @@ export default function Loading() {
     color="#FFFFFF"
     ariaLabel="three-dots-loading"
     wrapperStyle={{}}
-    wrapperClassName="xubiru"
+    wrapperClassName=""
     visible={true}/>
   )
 }

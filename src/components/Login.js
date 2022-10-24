@@ -1,10 +1,10 @@
 import axios from "axios"
-import styled from "styled-components";
+import styled from "styled-components"
 import { useNavigate, Link } from "react-router-dom"
 import { useContext, useState } from "react"
-import Loading from "./Loading";
+import Loading from "../aux/Loading"
 import logo from '../assets/imgs/logo.png'
-import { AuthContext } from "../aux/auth";
+import { AuthContext } from "../providers/userData"
 
 export default function Login() {
     const { setUser } = useContext(AuthContext)
@@ -25,10 +25,9 @@ export default function Login() {
             navigate("/today")
         })
 
-        console.log(body)
-
-        promise.catch((err) => {alert(err.response.data.message)
-        console.log(err)
+        promise.catch((err) => {
+            alert("login e/ou senha incorreta ou usuário não cadastrado")
+            console.log(err)
         })
     }
 
