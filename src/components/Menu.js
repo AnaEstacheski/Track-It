@@ -7,16 +7,16 @@ import ProgressBar from '../aux/ProgressBar'
 export default function Menu() {
   return (
     <Bottom>
-      <Link to={"/habits"}  style={{ textDecoration: "none" }}>
+      <Link to={"/habits"} style={{ textDecoration: "none" }}>
         <p>Hábitos</p>
       </Link>
-      <Link to={"/hoje"}  style={{ textDecoration: "none" }}>
+      <Link to={"/today"} style={{ textDecoration: "none" }}>
         <button>
           <ProgressBar
           />
         </button>
       </Link>
-      <Link to={"/historic"}  style={{ textDecoration: "none" }}>
+      <Link to={"/historic"} style={{ textDecoration: "none" }}>
         <p>Histórico</p>
       </Link>
     </Bottom>
@@ -35,7 +35,6 @@ const Bottom = styled.div`
   width: 375px;
   z-index: 50;
   
-
   p {
     font-family: "Lexend Deca", sans-serif;
     color: #52B6FF;
@@ -43,9 +42,6 @@ const Bottom = styled.div`
   }
 
   button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: "Lexend Deca", sans-serif;
     color: #FFFFFF;
     background-color: #52B6FF;

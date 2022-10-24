@@ -127,6 +127,11 @@ const FormStyle = styled.div`
     color: #DBDBDB;
   }
 
+  input:disabled {
+    background-color: #F2F2F2;
+    color: #D4D4D4;
+  }
+
   button {
     display: flex;
     justify-content: center;

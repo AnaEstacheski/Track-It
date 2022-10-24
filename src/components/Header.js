@@ -10,7 +10,7 @@ export default function Header() {
         <Top>
             <img src={logo} alt="logo" />
             <div>
-                <img src={user.image} alt="profile image" />
+                <img src={user.image} alt="userImage" />
             </div>
         </Top>
     )
@@ -23,7 +23,7 @@ const Top = styled.div`
     left: 0;
     align-items: center;
     justify-content: space-between;
-    width: 375px;
+    width: 100%;
     height: 70px;
     background-color: #126BA5;
     padding: 0 18px;

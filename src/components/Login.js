@@ -106,7 +106,12 @@ const FormStyle = styled.div`
 
     input::placeholder {
         color: #DBDBDB;
-       }
+    }
+
+    input:disabled {
+        background-color: #F2F2F2;
+        color: #D4D4D4;
+    }
 
     button {
         display: flex;
