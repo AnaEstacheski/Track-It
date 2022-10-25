@@ -20,9 +20,11 @@ const HistoricContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-family: 'Lexend Deca', sans-serif;
-  margin: 120px 18px;
-
+  
+  background-color: #E5E5E5;
+  
   h2 {
+    margin: 98px 18px 18px 18px;
     font-size: 23px;
     line-height: 29px;
     color: #126BA5;
@@ -30,19 +32,8 @@ const HistoricContainer = styled.div`
   
   h3 {
     font-size: 18px;
-    margin-top: 30px;
+    margin: 10px 22px 449px 18px;
     line-height: 22px;
     color: #666666;
   }
-  
-  > div {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    h4 {
-      margin-top: 10px;
-      font-size: 18px;
-    }
 `

@@ -8,7 +8,6 @@ import styled from 'styled-components'
 export default function CreateHabit({ setSave, save, setCreateHbts }) {
     const [isClicked, setIsClicked] = useState(false)
     const [daySelected, setDaySelected] = useState([])
-    console.log(daySelected)
     const [habitName, setHabitName] = useState("")
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
     const { user } = useContext(AuthContext)
@@ -22,6 +21,12 @@ export default function CreateHabit({ setSave, save, setCreateHbts }) {
     }
 
     function clicked(i) {
+        let isSelected
+        if (daySelected.includes(i)) {
+            isSelected = daySelected.filter((s) => s !== i)
+            setDaySelected(isSelected)
+            return
+        }
         const dayss = [...daySelected, i]
         setDaySelected(dayss)
     }
@@ -33,35 +38,40 @@ export default function CreateHabit({ setSave, save, setCreateHbts }) {
             days: daySelected
         }
         sendHabit(body)
-        
     }
 
     function sendHabit(body) {
-        setIsClicked(true)
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        if (daySelected.length === 0) {
+            alert('Selecione os dias corretamente')
+        } else if (daySelected.length !== 0 && habitName !== "") {
+            setIsClicked(true)
+            const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${user.token}`
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
             }
+
+            const promise = axios.post(URL, body, config)
+
+            promise.then(() => {
+                setCreateHbts(true)
+                setHabitName("")
+                setDaySelected([])
+                setTimeout(() => {
+                    setCreateHbts(false)
+                    setSave(!save)
+                }, 2000)
+            })
+
+            promise.catch((err) => {
+                alert('Erro de servidor, tente novamente')
+                console.log(err.response.data)
+            })
+
+
         }
-
-        const promise = axios.post(URL, body, config)
-
-        promise.then(() => {
-            setCreateHbts(true)
-            setHabitName("")
-            setDaySelected([])
-            setTimeout(() => {
-                setCreateHbts(false)
-                setSave(!save)
-            }, 2000)
-        })
-
-        promise.catch((err) => {
-            alert('Erro de servidor, tente novamente')
-            console.log(err.response.data)
-        })
     }
 
     return (
@@ -83,10 +93,10 @@ export default function CreateHabit({ setSave, save, setCreateHbts }) {
                                     onClick={() => click(i)}
                                     disabled={isClicked ? true : false}
                                     style={{
-                                        backgroundColor: daySelected.includes(i) || daySelected.includes(i+7) ? "#CFCFCF" : "transparent",
-                                        color: daySelected.includes(i) || daySelected.includes(i+7) ? "#FFFFFF" : "#CFCFCF"
+                                        backgroundColor: daySelected.includes(i) || daySelected.includes(i + 7) ? "#CFCFCF" : "transparent",
+                                        color: daySelected.includes(i) || daySelected.includes(i + 7) ? "#FFFFFF" : "#CFCFCF"
                                     }}
-                                    >
+                                >
                                     <p key={i}>
                                         {e}
                                     </p>
@@ -95,9 +105,11 @@ export default function CreateHabit({ setSave, save, setCreateHbts }) {
                         })}
                     </SelectDays>
                     <ButtonsWrapper>
-                        <p>Cancelar</p>
+                        <p
+                            onClick={() => setCreateHbts(false)}
+                        >Cancelar</p>
                         <button
-                        
+
                         >
                             {isClicked ? <Loading /> : "Salvar"}
                         </button>
@@ -161,7 +173,7 @@ const ButtonsWrapper = styled.div`
     justify-content: flex-end;
     align-items: center;
     gap: 23px;
-    margin-top: 29px;
+    margin-top: 15px;
     
     button {
         border-style: none;
@@ -169,6 +181,7 @@ const ButtonsWrapper = styled.div`
         width: 84px;
 		height: 35px;
         padding-bottom: 2px;
+        padding-left: 10px;
    		background-color: #52B6FF;
 		border-radius: 4px;
         font-family: 'Lexend Deca', sans-serif;

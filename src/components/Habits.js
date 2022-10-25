@@ -81,10 +81,11 @@ const HabitsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 70px;
   font-family: 'Lexend Deca', sans-serif;
   background-color: #E5E5E5;
+  height: 500px;
   
 
   h2 {
@@ -100,6 +101,12 @@ const HabitsContainer = styled.div`
     margin: 13px 18px 0px 18px;
   }
   
+  p {
+    font-size: 18px;
+    line-height: 22px;
+    color: #666666;
+    margin: 28px 18px;
+  }
 `
 const AddButton = styled.div`
   display: flex;
