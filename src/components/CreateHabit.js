@@ -5,13 +5,13 @@ import { AuthContext } from "../providers/userData"
 import Loading from '../aux/Loading'
 import styled from 'styled-components'
 
-export default function CreateHabit({ createHbts, setCreateHbts, habits, setHabits }) {
+export default function CreateHabit({ setSave, save, setCreateHbts }) {
     const [isClicked, setIsClicked] = useState(false)
     const [daySelected, setDaySelected] = useState([])
     console.log(daySelected)
     const [habitName, setHabitName] = useState("")
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext)
 
     function click(i) {
         if (i === 0) {
@@ -33,6 +33,7 @@ export default function CreateHabit({ createHbts, setCreateHbts, habits, setHabi
             days: daySelected
         }
         sendHabit(body)
+        
     }
 
     function sendHabit(body) {
@@ -47,17 +48,20 @@ export default function CreateHabit({ createHbts, setCreateHbts, habits, setHabi
 
         const promise = axios.post(URL, body, config)
 
-        promise.then((res) => {
-            setHabits(res.data)
-            console.log(res)
+        promise.then(() => {
+            setCreateHbts(true)
+            setHabitName("")
+            setDaySelected([])
+            setTimeout(() => {
+                setCreateHbts(false)
+                setSave(!save)
+            }, 2000)
         })
 
         promise.catch((err) => {
             alert('Erro de servidor, tente novamente')
             console.log(err.response.data)
         })
-
-
     }
 
     return (
@@ -78,7 +82,11 @@ export default function CreateHabit({ createHbts, setCreateHbts, habits, setHabi
                                     key={i}
                                     onClick={() => click(i)}
                                     disabled={isClicked ? true : false}
-                                >
+                                    style={{
+                                        backgroundColor: daySelected.includes(i) || daySelected.includes(i+7) ? "#CFCFCF" : "transparent",
+                                        color: daySelected.includes(i) || daySelected.includes(i+7) ? "#FFFFFF" : "#CFCFCF"
+                                    }}
+                                    >
                                     <p key={i}>
                                         {e}
                                     </p>
@@ -88,7 +96,9 @@ export default function CreateHabit({ createHbts, setCreateHbts, habits, setHabi
                     </SelectDays>
                     <ButtonsWrapper>
                         <p>Cancelar</p>
-                        <button>
+                        <button
+                        
+                        >
                             {isClicked ? <Loading /> : "Salvar"}
                         </button>
                     </ButtonsWrapper>
@@ -140,8 +150,6 @@ const WeekWrapper = styled.div`
     width: 30px;
     border-radius: 5px;
     border: 1px solid #D4D4D4;
-    color: ${(props) => (props.background ? `#FFFFFF` : `#CFCFCF`)}
-    background-color: ${(props) => (props.background ? `#CFCFCF` : `#FFFFFF`)}
 
     p {
 		margin: 8px 10px;

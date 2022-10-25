@@ -28,6 +28,7 @@ const Top = styled.div`
     background-color: #126BA5;
     padding: 0 18px;
     z-index: 50;
+    box-shadow: 0px 4px 4px 0px #00000026;
     
     div {
         width: 51px;

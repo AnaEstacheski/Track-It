@@ -12,8 +12,8 @@ import HabitsList from './HabitsList'
 export default function Habits() {
   const [habits, setHabits] = useState([])
   const [createHbts, setCreateHbts] = useState(false)
-  const { user } = useContext(AuthContext);
-
+  const [save, setSave] = useState(false)
+  const { user } = useContext(AuthContext)
 
   useEffect(() => {
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
@@ -32,37 +32,45 @@ export default function Habits() {
     })
 
     promise.catch((err) => console.log(err.response.data))
-  }, [])
+  }, [save])
 
   return (
     <>
       <Header />
       <HabitsContainer>
-       
+
         <AddButton>
-        <h2>Meus hábitos</h2>
+          <h2>Meus hábitos</h2>
           <p onClick={() => { setCreateHbts(true) }}>+</p>
         </AddButton>
-
-        <CreateHabit
-          createHbts={createHbts}
-          setCreateHbts={setCreateHbts}
-          habits={habits}
-          setHabits={setHabits}
-        />
-        {
-          habits.map((habit) => {
-            return (
-              <HabitsList
-              id={habit.id}
-              key={habit.id}
-              name={habit.name}
-              days={habit.days}
-            ></HabitsList>
-            )
-          })
-        }
-
+        {createHbts && (
+          <CreateHabit
+            setCreateHbts={setCreateHbts}
+            setSave={setSave}
+            save={save}
+          />
+        )}
+        {(
+          (habits.length === 0) ? (
+            <p>
+              Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
+              começar a trackear!
+            </p>
+          ) : (
+            habits.map((habit) => {
+              return (
+                <HabitsList
+                  id={habit.id}
+                  key={habit.id}
+                  name={habit.name}
+                  days={habit.days}
+                  setSave={setSave}
+                  save={save}
+                ></HabitsList>
+              )
+            })
+          )
+        )}
       </HabitsContainer>
       <Menu />
     </>
@@ -77,8 +85,7 @@ const HabitsContainer = styled.div`
   margin-top: 70px;
   font-family: 'Lexend Deca', sans-serif;
   background-color: #E5E5E5;
-  width: 100%;
-  height:100%;
+  
 
   h2 {
     font-size: 23px;
@@ -99,6 +106,11 @@ const AddButton = styled.div`
   align-items: center;
   margin: 15px 30px;
   justify-content: space-between;
+  width: 100%;
+
+  h2 {
+    margin-left: 17px;
+  }
 
   p {
     background-color: #52B6FF;

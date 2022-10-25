@@ -22,6 +22,7 @@ export default function Login() {
 
         promise.then((res) => {
             setUser(res.data)
+            console.log(res.data)
             navigate("/today")
         })
 
@@ -72,6 +73,7 @@ const LoginScreen = styled.div`
     justify-content: center;
     margin-top: 68px;
     font-family: 'Lexend Deca', sans-serif;
+    background-color: #FFFFFF;
 
     img {
 		height: 180px;

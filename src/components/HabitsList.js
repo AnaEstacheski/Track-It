@@ -1,12 +1,31 @@
 import React from 'react'
 import axios from "axios"
-import { useState, useEffect, useContext } from "react"
+import { useContext } from "react"
 import styled from "styled-components"
 import { AuthContext } from "../providers/userData"
 import del from '../assets/imgs/Group.png'
 
-export default function ({ id, name, days, update, setUpdate }) {
+export default function ({ id, name, days, setSave, save }) {
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
+    const { user } = useContext(AuthContext)
+
+    function deleteHabit() {
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+        const config = {
+            headers: { Authorization: `Bearer ${user.token}` },
+        }
+
+        const promise = axios.delete(URL, config)
+
+        promise.then((res) => {
+            console.log(res.data)
+            setSave(!save)
+        })
+
+        promise.catch((err) => {
+            console.log(err.response.data)
+        })
+    }
 
     return (
         <Container>
@@ -16,7 +35,11 @@ export default function ({ id, name, days, update, setUpdate }) {
                     return (
                         <WeekWrapper
                             type="button"
-                            key={e}
+                            key={i}
+                            style={{
+                                backgroundColor: days.includes(i) ? "#CFCFCF" : "transparent",
+                                color: days.includes(i) ? "#FFFFFF" : "#CFCFCF"
+                            }}
                         >
                             <p key={i}>
                                 {e}
@@ -25,7 +48,7 @@ export default function ({ id, name, days, update, setUpdate }) {
                     );
                 })}
             </Wp>
-            <img src={del} alt="delete"/>
+            <img src={del} alt="delete" onClick={deleteHabit}/>
         </Container>
     )
 }
@@ -33,7 +56,7 @@ export default function ({ id, name, days, update, setUpdate }) {
 const Container = styled.div`
   width: 340px;
   height: 91px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   background: #FFFFFF;
   border-radius: 5px;
   position: relative;
@@ -60,6 +83,8 @@ const WeekWrapper = styled.div`
     width: 30px;
     border-radius: 5px;
     border: 1px solid #D4D4D4;
+    background-color: ${(props) => props.color};
+    color: ${(props) => props.border};
 
     p {
 		margin: 8px 10px;
